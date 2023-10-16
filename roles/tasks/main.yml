@@ -1,0 +1,43 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+#  - name: update package cache for Ubuntu
+#    apt:
+#      update_cache: yes
+#    when: ansible_distribution == "Ubuntu"
+
+  - name: install nagios for Ubuntu
+    package:
+      name:
+        - nagios4
+        - nagios-plugins
+    when: ansible_distribution == "Ubuntu"
+
+  - name: enable and start service for Ubuntu
+    service:
+      name: nagios4
+      state: started
+      enabled: yes
+    when: ansible_distribution == "Ubuntu"
+
+#  - name: update package cache for CentOS
+#    yum:
+#      name: epel-release
+#      state: latest
+#    when: ansible_distribution == "CentOS"
+
+  - name: install nagios for CentOS
+    yum:
+      name:
+        - nagios
+        - nagios-plugins-all
+    when: ansible_distribution == "CentOS"
+
+  - name: enable and start service for CentOS
+    service:
+      name: nagios
+      state: started
+      enabled: yes
+    when: ansible_distribution == "CentOS"
